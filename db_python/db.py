@@ -52,7 +52,23 @@ def execute_query(connection, query):
 
 
 
-def write_to_hdb(id, filename, mask, label, connection ):
+
+
+def write_to_hdb2(id,filename, mask, label):
+    connection = create_db_connection("localhost", "root", "root", "hdb")
+    print("writing to the db")
+    cursor = connection.cursor()
+    mySql_insert_query = """INSERT INTO himage_tbl (id, filename, mask, label) 
+                                VALUES (%d, %s, %s, %s) """
+
+    record = (id, filename, mask, label)
+    cursor.execute(mySql_insert_query, record)
+
+def write_to_hdb(id,filename, mask, label , connection):
+    
+    print("writing to the db")
+    
+    cursor = connection.cursor()
     mySql_insert_query = """INSERT INTO himage_tbl (id, filename, mask, label) 
                                 VALUES (%d, %s, %s, %s) """
 
@@ -70,9 +86,9 @@ CREATE TABLE himage_tbl (
   );
  """
 
-connection = create_server_connection("localhost", "root", "root")
 
-create_database_query = "CREATE DATABASE hdb"
-connection = create_db_connection("localhost", "root", "root", "hdb") # Connect to the Database
 
-execute_query(connection, create_hyperspectral_image_table)
+# create_database_query = "CREATE DATABASE hdb"
+# connection = create_db_connection("localhost", "root", "root", "hdb") # Connect to the Database
+
+# execute_query(connection, create_hyperspectral_image_table)
